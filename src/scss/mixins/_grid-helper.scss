@@ -1,0 +1,113 @@
+
+@mixin clearfix() {
+  &:before,
+  &:after {
+    content: " "; // 1
+    display: table; // 2
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+@mixin make-col-span($size, $columns: $grid-columns) {
+  float: left;
+  width: percentage($size / $columns);
+}
+
+@mixin make-col-offset($size, $columns: $grid-columns) {
+  margin-left: percentage($size / $columns);
+}
+
+@mixin make-col-push($size, $columns: $grid-columns) {
+  left: if($size > 0, percentage($size / $columns), auto);
+}
+
+@mixin make-col-pull($size, $columns: $grid-columns) {
+  right: if($size > 0, percentage($size / $columns), auto);
+}
+
+@mixin make-col-modifier($type, $size, $columns) {
+  // Work around the lack of dynamic mixin @include support (https://github.com/sass/sass/issues/626)
+  @if $type == push {
+    @include make-col-push($size, $columns);
+  } @else if $type == pull {
+    @include make-col-pull($size, $columns);
+  } @else if $type == offset {
+    @include make-col-offset($size, $columns);
+  }
+}
+@function breakpoint-min($name, $breakpoints: $grid-breakpoints) {
+  $min: map-get($breakpoints, $name);
+  @return if($min != 0, $min, null);
+}
+@mixin media-breakpoint-up($name, $breakpoints: $grid-breakpoints) {
+  $min: breakpoint-min($name, $breakpoints);
+  @if $min {
+    @media (min-width: $min) {
+      @content;
+    }
+  } @else {
+    @content;
+  }
+}
+
+%grid-column {
+  position: relative;
+  // Prevent columns from collapsing when empty
+  min-height: 1px;
+  // Inner gutter via padding
+  padding-left: ($grid-gutter-width / 2);
+  padding-right: ($grid-gutter-width / 2);
+}
+
+@each $grid-breakpoints in map-keys($grid-breakpoints) {
+
+
+  @each $grid-settings in $grid-settings {
+    .col-#{$grid-breakpoints}-gr#{round($grid-settings)} {
+      @extend %grid-column;
+    }
+  }
+
+  @include media-breakpoint-up($grid-breakpoints) {
+
+    @each $grid-settings in $grid-settings {
+      .col-#{$grid-breakpoints}-gr#{round($grid-settings)} {
+        @include make-col-span($grid-settings/100, 1);
+      }
+      @each $modifier in (pull, push, offset) {
+        .col-#{$grid-breakpoints}-#{$modifier}-gr#{round($grid-settings)} {
+          @include make-col-modifier($modifier, ($grid-settings/100), 1)
+        }
+      }
+    }
+  }
+
+  @if $grid-with-bootstrap-columns {
+
+    @for $i from 1 through $grid-columns {
+      .col-#{$grid-breakpoints}-#{$i} {
+        @extend %grid-column;
+      }
+    }
+
+    @include media-breakpoint-up($grid-breakpoints) {
+      @for $i from 1 through $grid-columns {
+        .col-#{$grid-breakpoints}-#{$i} {
+          @include make-col-span($i, $grid-columns);
+        }
+      }
+      @each $modifier in (pull, push, offset) {
+        @for $i from 0 through $grid-columns {
+          .col-#{$grid-breakpoints}-#{$modifier}-#{$i} {
+            @include make-col-modifier($modifier, $i, $grid-columns)
+          }
+        }
+      }
+    }
+  }
+}
+
+
+

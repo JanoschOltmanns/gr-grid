@@ -1,0 +1,27 @@
+
+
+@if $include-base-styles {
+  html {
+    box-sizing: border-box;
+  }
+
+  *,
+  *:before,
+  *:after {
+    box-sizing: inherit;
+  }
+
+  .container {
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: ($grid-gutter-width / 2);
+    padding-right: ($grid-gutter-width / 2);
+    @include clearfix();
+  }
+
+  .row {
+    @include clearfix();
+    margin-left: ($grid-gutter-width / -2);
+    margin-right: ($grid-gutter-width / -2);
+  }
+}
