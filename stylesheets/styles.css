@@ -7,3 +7,25 @@ body {
   max-width: 1180px;
   margin: 0 auto;
 }
+
+.classes-table {
+  width: 100%;
+  border: 1px solid #eceeef;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+.classes-table thead th,
+.classes-table tbody td {
+  padding: 10px;
+  border: 1px solid #eceeef;
+}
+.classes-table thead th {
+  vertical-align: bottom;
+  border-bottom-width: 2px;
+}
+.classes-table tbody td {
+
+}
+.classes-table tbody tr:nth-of-type(odd) {
+  background-color: #f9f9f9;
+}
