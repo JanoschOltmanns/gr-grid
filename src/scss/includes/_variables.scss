@@ -1,19 +1,18 @@
+
+// base variables based on twitter bootstrap 4
 $grid-breakpoints: (
-  // Extra small screen / phone
         xs: 0,
-  // Small screen / phone
         sm: 34em,
-  // Medium screen / tablet
         md: 48em,
-  // Large screen / desktop
         lg: 62em,
-  // Extra large screen / wide desktop
         xl: 75em
 ) !default;
 
-$grid-gutter-width: 1.875rem !default; // 30px
+$grid-gutter-width: 1.875rem !default;
 $grid-columns: 12 !default;
 
+
+// base settings for our golden ratio grid
 $grid-settings: (
         47.2
         52.8
@@ -25,5 +24,6 @@ $grid-settings: (
         76.4
 ) !default;
 
+// exclude or include some declarations
 $grid-with-bootstrap-columns: true !default; // Not needed if bootstrap is already available or default classes are not needed
 $include-base-styles: true !default; // Not needed if bootstrap is already available
